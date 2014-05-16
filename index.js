@@ -6,11 +6,13 @@ var yaml = require('js-yaml');
 var fs = require('fs');
 var path = require('path');
 var gulp = require('gulp');
+var ejs = require('ejs');
 
-// 不使用 gulp.dest 存盘因为
-// 1. gulp.dest 获取的文件路径依赖 file.relative
-// 2. gulp.watch 时 gulp.src(event.path) 获取的 file.relative 仅有文件名
-// 3. gulp.src 通过通配符匹配的文件，获取的 file.relative 是相对 gulp 启动目录的
+// 说明:
+//   不使用 gulp.dest 存盘因为
+//   1. gulp.dest 获取的文件路径依赖 file.relative
+//   2. gulp.watch 时 gulp.src(event.path) 获取的 file.relative 仅有文件名
+//   3. gulp.src 通过通配符匹配的文件，获取的 file.relative 是相对 gulp 启动目录的
 module.exports.savefile = function (opts) {
   return through.obj(function (file, enc, cb) {
     if (file.isNull()) {
@@ -34,10 +36,16 @@ module.exports.savefile = function (opts) {
   });
 }
 
-// 组合 Handlebars 和 yaml 自动生成网页
+// 组合模板和数据生成网页
+// 模板支持: Handlebars, ejs
+// 数据支持: yaml
+// 参数:
+//   opts.partials: Handlebars 参数
+//   opts.helpers: Handlebars 参数
 module.exports.html = function (opts) {
 
   var options = opts || {};
+
   //Go through a partials object
   if(options.partials){
     for(var p in options.partials){
@@ -67,19 +75,26 @@ module.exports.html = function (opts) {
     var basename = path.basename(filepath);
     var name = path.basename(filepath, path.extname(basename));
 
-    var tplfile = path.join(dirname, name + ".hbs");
+    var hbsfile = path.join(dirname, name + ".hbs");
+    var ejsfile = path.join(dirname, name + ".ejs");
     var datafile = path.join(dirname, name + ".yaml");
     var htmlfile = path.join(dirname, name + ".html");
 
-    var tpl = fs.readFileSync(tplfile, 'utf8');
-    var data = {};
-    if (fs.existsSync(datafile)) {
-      data = yaml.safeLoad(fs.readFileSync(datafile, 'utf8'));
-    }
 
     try {
-      var template = Handlebars.compile(tpl);
-      file.contents = new Buffer(template(data));
+      var data = {};
+      if (fs.existsSync(datafile)) {
+        data = yaml.safeLoad(fs.readFileSync(datafile, 'utf8'));
+      }
+
+      if (fs.existsSync(hbsfile)) {
+        var tpl = fs.readFileSync(hbsfile, 'utf8');
+        file.contents = new Buffer(Handlebars.compile(tpl)(data));
+      } else if (fs.existsSync(ejsfile)) {
+        var tpl = fs.readFileSync(ejsfile, 'utf8');
+        file.contents = new Buffer(ejs.render(tpl, data));
+      }
+
       file.path = htmlfile;
     } catch (err) {
       this.emit('error', new gutil.PluginError('gulp-tpl.html', err));

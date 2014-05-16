@@ -1,4 +1,4 @@
 gulp-tpl
 ========
 
-handlebars + yaml -> html
+(handlebars/ejs) + yaml -> html

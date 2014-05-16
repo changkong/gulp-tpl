@@ -1,13 +1,15 @@
 {
   "name": "gulp-tpl",
-  "version": "0.0.2",
-  "description": "handlebars + yaml -> html",
+  "version": "0.1.0",
+  "description": "(handlebars/ejs) + yaml -> html",
   "author": "changkong <changkong012@gmail.com>",
   "license": "MIT",
   "keywords": [
     "gulp",
     "handlebars",
-    "yaml"
+    "ejs",
+    "yaml",
+    "html"
   ],
   "bugs": {
     "url": "https://github.com/changkong/gulp-tpl/issues"
@@ -31,7 +33,8 @@
     "gulp-util": "~2.2.10",
     "through2": "~0.4.0",
     "handlebars": "~2.0",
-    "js-yaml": "~3.0.2"
+    "js-yaml": "~3.0.2",
+    "ejs": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "~1.18.2"
