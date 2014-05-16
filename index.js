@@ -80,26 +80,42 @@ module.exports.html = function (opts) {
     var datafile = path.join(dirname, name + ".yaml");
     var htmlfile = path.join(dirname, name + ".html");
 
-
+    var errmsg = "";
     try {
       var data = {};
       if (fs.existsSync(datafile)) {
         data = yaml.safeLoad(fs.readFileSync(datafile, 'utf8'));
       }
-
-      if (fs.existsSync(hbsfile)) {
-        var tpl = fs.readFileSync(hbsfile, 'utf8');
-        file.contents = new Buffer(Handlebars.compile(tpl)(data));
-      } else if (fs.existsSync(ejsfile)) {
-        var tpl = fs.readFileSync(ejsfile, 'utf8');
-        file.contents = new Buffer(ejs.render(tpl, data));
-      }
-
-      file.path = htmlfile;
     } catch (err) {
-      this.emit('error', new gutil.PluginError('gulp-tpl.html', err));
+      errmsg = "[gulp-tpl.html error: " + datafile + "]  " + err;
     }
 
+    if (errmsg==="") {
+      var tplname = name;
+      try {
+        if (fs.existsSync(hbsfile)) {
+          tplname += ".hbs";
+          var tpl = fs.readFileSync(hbsfile, 'utf8');
+          file.contents = new Buffer(Handlebars.compile(tpl)(data));
+        } else if (fs.existsSync(ejsfile)) {
+          tplname += ".ejs";
+          var tpl = fs.readFileSync(ejsfile, 'utf8');
+          file.contents = new Buffer(ejs.render(tpl, data));
+        }
+      } catch (err) {
+        errmsg = "[gulp-tpl.html error: " + dirname + tplname + "]  " + err;
+      }
+    }
+
+    if (errmsg!="") {
+      if (options.ignoreErr) {
+        gutil.log(errmsg);
+      } else {
+        this.emit('error', new gutil.PluginError('gulp-tpl.html', errmsg));
+      }
+    }
+
+    file.path = htmlfile;
     this.push(file);
     cb();
   });
