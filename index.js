@@ -100,6 +100,7 @@ module.exports.html = function (opts) {
         } else if (fs.existsSync(ejsfile)) {
           tplname += ".ejs";
           var tpl = fs.readFileSync(ejsfile, 'utf8');
+          data.filename = ejsfile;
           file.contents = new Buffer(ejs.render(tpl, data));
         }
       } catch (err) {
