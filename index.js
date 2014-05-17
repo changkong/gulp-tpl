@@ -103,7 +103,7 @@ module.exports.html = function (opts) {
           file.contents = new Buffer(ejs.render(tpl, data));
         }
       } catch (err) {
-        errmsg = "[gulp-tpl.html error: " + dirname + tplname + "]  " + err;
+        errmsg = "[gulp-tpl.html error: " + path.join(dirname,tplname) + "]  " + err;
       }
     }
 
