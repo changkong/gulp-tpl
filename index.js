@@ -43,6 +43,7 @@ module.exports.html = function (opts) {
     }
 
     var filepath = file.path;
+    console.log(filepath);
     var dirname = path.dirname(filepath);
     var basename = path.basename(filepath);
     var name = path.basename(filepath, path.extname(basename));
@@ -62,7 +63,7 @@ module.exports.html = function (opts) {
         data = yaml.safeLoad(fs.readFileSync(yamlfile, 'utf8'));
       } else if (fs.existsSync(jsonfile)) {
         datafile = jsonfile;
-        data = JSON.$.parseJSON(fs.readFileSync(jsonfile, 'utf8'));
+        data = JSON.parse(fs.readFileSync(jsonfile, 'utf8'));
       }
     } catch (err) {
       errmsg = "[gulp-tpl.html error: " + datafile + "]  " + err;
