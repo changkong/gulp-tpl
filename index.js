@@ -49,14 +49,20 @@ module.exports.html = function (opts) {
 
     var hbsfile = path.join(dirname, name + ".hbs");
     var ejsfile = path.join(dirname, name + ".ejs");
-    var datafile = path.join(dirname, name + ".yaml");
+    var yamlfile = path.join(dirname, name + ".yaml");
+    var jsonfile = path.join(dirname, name + ".json");
     var htmlfile = path.join(dirname, name + ".html");
 
+    var data = {};
     var errmsg = "";
+    var datafile = "";
     try {
-      var data = {};
-      if (fs.existsSync(datafile)) {
-        data = yaml.safeLoad(fs.readFileSync(datafile, 'utf8'));
+      if (fs.existsSync(yamlfile)) {
+        datafile = yamlfile;
+        data = yaml.safeLoad(fs.readFileSync(yamlfile, 'utf8'));
+      } else if (fs.existsSync(jsonfile)) {
+        datafile = jsonfile;
+        data = JSON.$.parseJSON(fs.readFileSync(jsonfile, 'utf8'));
       }
     } catch (err) {
       errmsg = "[gulp-tpl.html error: " + datafile + "]  " + err;
