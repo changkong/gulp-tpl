@@ -11,6 +11,14 @@ State
 Usage
 =====
 
+note
+----
+
+* **data file:** `demo.yaml / demo.json`
+* **filter file:** `demo.js`
+* **tpl file:** `demo.hbs / demo.ejs`
+* **node:** base name is both `demo`
+
 gulpfile.js
 -----------
 
