@@ -87,6 +87,25 @@ module.exports.filter = function(data) {
 <div>handlebars hello world!</div>
 ```
 
+option
+------
+
+* **ignoreErr**
+
+ignore error, only log error msg, easy to watch and debug
+
+```javascript
+var gulp = require('gulp');
+var savefile = require('gulp-savefile');
+var tpl = require('gulp-tpl');
+
+gulp.task('default', function() {
+  return gulp.src('demo.hbs')
+        .pipe(tpl.html({ignoreErr:true}))
+        .pipe(savefile());
+});
+```
+
 Test
 ====
 

@@ -9,9 +9,11 @@ var gulp = require('gulp');
 var ejs = require('ejs');
 
 // 组合模板和数据生成网页
-// 模板支持: Handlebars, ejs
-// 数据支持: yaml
+// 模板支持: Handlebars/ejs
+// 数据支持: yaml/json
+// 过滤器支持: js
 // 参数:
+//   opts.ignoreErr: easy to watch and debug
 //   opts.partials: Handlebars 参数
 //   opts.helpers: Handlebars 参数
 module.exports.html = function (opts) {
