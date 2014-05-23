@@ -109,11 +109,11 @@ gulp.task('default', function() {
 Test
 ====
 
-* run `npm test`
-* example `./test`
+* `npm test`
+* examples `./test`
 
-Note
-====
+Deprecated
+==========
 
 gulp-tpl.savefile() is deprecated, please use gulp-savefile
 
