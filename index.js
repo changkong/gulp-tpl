@@ -47,7 +47,7 @@ module.exports.html = function (opts) {
     var basename = path.basename(filepath);
     var name = path.basename(filepath, path.extname(basename));
 
-    if (path.extname(name)==="filter") {
+    if (path.extname(name)===".filter") {
       name = name.substr(0, name.length-7);
     }
 
