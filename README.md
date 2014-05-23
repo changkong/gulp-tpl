@@ -11,22 +11,8 @@ State
 Usage
 =====
 
-data + tpl -> html
-------------------
-
-demo1.yaml
-
-```yaml
-name: handlebars
-```
-
-demo1.hbs
-
-```html
-<div>{{name}}</div>
-```
-
 gulpfile.js
+-----------
 
 ```javascript
 var gulp = require('gulp');
@@ -34,13 +20,28 @@ var savefile = require('gulp-savefile');
 var tpl = require('gulp-tpl');
 
 gulp.task('default', function() {
-  return gulp.src(['demo1.hbs'])
+  return gulp.src('demo.hbs') // or demo.ejs/demo.js/demo.yaml/demo.json
         .pipe(tpl.html())
         .pipe(savefile());
 });
 ```
 
-output: demo1.html
+data + tpl -> html
+------------------
+
+* **demo.yaml**
+
+```yaml
+name: handlebars
+```
+
+* **demo.hbs**
+
+```html
+<div>{{name}}</div>
+```
+
+* **output: demo.html**
 
 ```html
 <div>handlebars</div>
@@ -49,44 +50,29 @@ output: demo1.html
 data + filter + tpl -> html
 ---------------------------
 
-demo1.yaml
+* **demo.yaml**
 
 ```yaml
 name: handlebars
 ```
 
-demo1.js
+* **demo.js**
 
 ```javascript
 'use strict';
 module.exports.filter = function(data) {
-  data = data || {};
   data.name += " hello world!";
   return data;
 };
 ```
 
-demo1.hbs
+* **demo.hbs**
 
 ```html
 <div>{{name}}</div>
 ```
 
-gulpfile.js
-
-```javascript
-var gulp = require('gulp');
-var savefile = require('gulp-savefile');
-var tpl = require('gulp-tpl');
-
-gulp.task('default', function() {
-  return gulp.src(['demo1.hbs'])
-        .pipe(tpl.html())
-        .pipe(savefile());
-});
-```
-
-output: demo1.html
+* **output: demo1.html**
 
 ```html
 <div>handlebars hello world!</div>
