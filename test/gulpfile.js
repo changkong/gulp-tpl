@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var savefile =require('gulp-savefile');
+var savefile = require('gulp-savefile');
 var tpl = require('./../index.js');
 
 

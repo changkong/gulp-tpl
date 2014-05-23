@@ -43,19 +43,24 @@ module.exports.html = function (opts) {
     }
 
     var filepath = file.path;
-    console.log(filepath);
     var dirname = path.dirname(filepath);
     var basename = path.basename(filepath);
     var name = path.basename(filepath, path.extname(basename));
+
+    if (path.extname(name)==="filter") {
+      name = name.substr(0, name.length-7);
+    }
 
     var hbsfile = path.join(dirname, name + ".hbs");
     var ejsfile = path.join(dirname, name + ".ejs");
     var yamlfile = path.join(dirname, name + ".yaml");
     var jsonfile = path.join(dirname, name + ".json");
+    var jsfile = path.join(dirname, name + ".filter.js");
     var htmlfile = path.join(dirname, name + ".html");
 
-    var data = {};
     var errmsg = "";
+
+    var data = {};
     var datafile = "";
     try {
       if (fs.existsSync(yamlfile)) {
@@ -67,6 +72,18 @@ module.exports.html = function (opts) {
       }
     } catch (err) {
       errmsg = "[gulp-tpl.html error: " + datafile + "]  " + err;
+    }
+
+    var filter = function(data) {};
+    if (errmsg==="") {
+      if (fs.existsSync(jsfile)) {
+        try {
+          filter = require(jsfile).filter;
+          data = filter(data);
+        } catch (err) {
+          errmsg = "[gulp-tpl.html error: " + jsfile + "]  " + err;
+        }
+      }
     }
 
     if (errmsg==="") {
