@@ -89,7 +89,7 @@ gulp.task('default', function() {
 output: demo1.html
 
 ```html
-<div>handlebars</div>
+<div>handlebars hello world!</div>
 ```
 
 Test
