@@ -78,6 +78,7 @@ module.exports.html = function (opts) {
     if (errmsg==="") {
       if (fs.existsSync(jsfile)) {
         try {
+          delete require.cache[require.resolve(jsfile)]; // 清除缓存
           filter = require(jsfile).filter;
           data = filter(data);
         } catch (err) {
