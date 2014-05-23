@@ -8,36 +8,6 @@ var path = require('path');
 var gulp = require('gulp');
 var ejs = require('ejs');
 
-// 说明:
-//   不使用 gulp.dest 存盘因为
-//   1. gulp.dest 获取的文件路径依赖 file.relative
-//   2. gulp.watch 时 gulp.src(event.path) 获取的 file.relative 仅有文件名
-//   3. gulp.src 通过通配符匹配的文件，获取的 file.relative 是相对 gulp 启动目录的
-module.exports.savefile = function (opts) {
-  return through.obj(function (file, enc, cb) {
-    gutil.log("gulp-tpl.savefile() is deprecated, please use gulp-savefile!");
-
-    if (file.isNull()) {
-      this.push(file);
-      return cb();
-    }
-
-    if (file.isStream()) {
-      this.emit('error', new gutil.PluginError('gulp-tpl.save', 'Streaming not supported'));
-      return cb();
-    }
-
-    try {
-      fs.writeFileSync(file.path, file.contents || '');
-    } catch (err) {
-      this.emit('error', new gutil.PluginError('gulp-tpl.save', err));
-    }
-
-    this.push(file);
-    cb();
-  });
-}
-
 // 组合模板和数据生成网页
 // 模板支持: Handlebars, ejs
 // 数据支持: yaml

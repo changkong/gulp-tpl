@@ -11,6 +11,11 @@ Usage
 
 
 
+Note
+====
+
+gulp-tpl.savefile() is deprecated, please use gulp-savefile!
+
 License
 =======
 
