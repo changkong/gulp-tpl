@@ -81,7 +81,7 @@ module.exports.filter = function(data) {
 <div>{{name}}</div>
 ```
 
-* **output: demo1.html**
+* **output: demo.html**
 
 ```html
 <div>handlebars hello world!</div>
