@@ -1,6 +1,6 @@
 {
   "name": "gulp-tpl",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "(handlebars/ejs) + yaml -> html",
   "author": "changkong <changkong012@gmail.com>",
   "license": "MIT",

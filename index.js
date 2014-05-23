@@ -15,6 +15,8 @@ var ejs = require('ejs');
 //   3. gulp.src 通过通配符匹配的文件，获取的 file.relative 是相对 gulp 启动目录的
 module.exports.savefile = function (opts) {
   return through.obj(function (file, enc, cb) {
+    gutil.log("gulp-tpl.savefile() is deprecated, please use gulp-savefile!");
+
     if (file.isNull()) {
       this.push(file);
       return cb();
