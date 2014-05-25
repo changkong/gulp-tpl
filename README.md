@@ -14,11 +14,12 @@ Usage
 Note
 ----
 
-* **data file:** `demo.yaml / demo.json`
-* **filter file:** `demo.js`
-* **tpl file:** `demo.hbs / demo.ejs`
+* data file: `demo.yaml / demo.json`
+* filter file: `demo.filter.js`
+* tpl file: `demo.hbs / demo.ejs`
 
-* **note:** **base name is both `demo`**
+* **note1:** **base name is both `demo`**
+* **note2:** **must `*.filter.js`**
 
 gulpfile.js
 -----------
@@ -29,7 +30,7 @@ var savefile = require('gulp-savefile');
 var tpl = require('gulp-tpl');
 
 gulp.task('default', function() {
-  return gulp.src('demo.hbs') // or demo.ejs/demo.js/demo.yaml/demo.json
+  return gulp.src('demo.hbs') // or demo.ejs/demo.filter.js/demo.yaml/demo.json
         .pipe(tpl.html())
         .pipe(savefile());
 });
@@ -41,7 +42,7 @@ data + tpl -> html
 * **demo.yaml**
 
 ```yaml
-name: handlebars
+name: world
 ```
 
 * **demo.hbs**
@@ -53,7 +54,7 @@ name: handlebars
 * **output: demo.html**
 
 ```html
-<div>handlebars</div>
+<div>world</div>
 ```
 
 data + filter + tpl -> html
@@ -62,15 +63,15 @@ data + filter + tpl -> html
 * **demo.yaml**
 
 ```yaml
-name: handlebars
+name: world
 ```
 
-* **demo.js**
+* **demo.filter.js**
 
 ```javascript
 'use strict';
 module.exports.filter = function(data) {
-  data.name += " hello world!";
+  data.name = "hello " + data.name;
   return data;
 };
 ```
@@ -84,7 +85,7 @@ module.exports.filter = function(data) {
 * **output: demo.html**
 
 ```html
-<div>handlebars hello world!</div>
+<div>hello world</div>
 ```
 
 option
