@@ -18,7 +18,7 @@ Note
 * filter file: `demo.filter.js`
 * tpl file: `demo.hbs / demo.ejs`
 
-* **note1:** **base name is both `demo`**
+* **note1:** **base name is same `demo`**
 * **note2:** **must `*.filter.js`**
 
 gulpfile.js
