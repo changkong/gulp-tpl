@@ -1,4 +1,5 @@
 'use strict';
+
 var gutil = require('gulp-util');
 var through = require('through2');
 var Handlebars = require('handlebars');
@@ -63,6 +64,8 @@ module.exports.html = function (opts) {
     var errmsg = "";
 
     var data = {};
+
+    // 读取数据文件
     var datafile = "";
     try {
       if (fs.existsSync(yamlfile)) {
@@ -76,6 +79,14 @@ module.exports.html = function (opts) {
       errmsg = "[gulp-tpl.html error: " + datafile + "]  " + err;
     }
 
+    // 读取设置变量
+    if (options.data) {
+      for(var attr in options.data){
+          data[attr]=options.data[attr];
+      }
+    }
+
+    // 调用过滤器
     var filter = function(data) {};
     if (errmsg==="") {
       if (fs.existsSync(jsfile)) {
@@ -92,13 +103,14 @@ module.exports.html = function (opts) {
     if (errmsg==="") {
       var tplname = name;
       try {
+        var tpl = null;
         if (fs.existsSync(hbsfile)) {
           tplname += ".hbs";
-          var tpl = fs.readFileSync(hbsfile, 'utf8');
+          tpl = fs.readFileSync(hbsfile, 'utf8');
           file.contents = new Buffer(Handlebars.compile(tpl)(data));
         } else if (fs.existsSync(ejsfile)) {
           tplname += ".ejs";
-          var tpl = fs.readFileSync(ejsfile, 'utf8');
+          tpl = fs.readFileSync(ejsfile, 'utf8');
           data.filename = ejsfile;
           file.contents = new Buffer(ejs.render(tpl, data));
         }
@@ -107,7 +119,7 @@ module.exports.html = function (opts) {
       }
     }
 
-    if (errmsg!="") {
+    if (errmsg!=="") {
       if (options.ignoreErr) {
         gutil.log(errmsg);
       } else {

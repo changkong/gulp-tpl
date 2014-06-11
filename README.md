@@ -1,7 +1,7 @@
 gulp-tpl
 ========
 
-data(yaml/json) + [filter(js)] + tpl(handlebars/ejs) -> html
+[data(yaml/json)] + [data(gulp control)] + [filter(js)] + tpl(handlebars/ejs) -> html
 
 State
 =====
@@ -86,6 +86,56 @@ module.exports.filter = function(data) {
 
 ```html
 <div>hello world</div>
+```
+
+data + gulp + filter + tpl -> html
+---------------------------
+
+gulpfile.js
+-----------
+
+```javascript
+var gulp = require('gulp');
+var savefile = require('gulp-savefile');
+var tpl = require('gulp-tpl');
+
+gulp.task('default', function() {
+  return gulp.src('demo.hbs') // or demo.ejs/demo.filter.js/demo.yaml/demo.json
+        .pipe(tpl.html({data:{v2:"from gulp"}}))
+        .pipe(savefile());
+});
+```
+
+* **demo.yaml**
+
+```yaml
+v1: from yaml
+```
+
+* **demo.filter.js**
+
+```javascript
+'use strict';
+module.exports.filter = function(data) {
+  data.v3 = "from filter";
+  return data;
+};
+```
+
+* **demo.hbs**
+
+```html
+<div>v1 {{v1}}</div>
+<div>v2 {{v2}}</div>
+<div>v3 {{v3}}</div>
+```
+
+* **output: demo.html**
+
+```html
+<div>v1 from yaml</div>
+<div>v2 from gulp</div>
+<div>v3 from filter</div>
 ```
 
 option
