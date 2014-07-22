@@ -1,7 +1,8 @@
 gulp-tpl
 ========
 
-[data(yaml/json)] + [data(gulp control)] + [filter(js)] + tpl(handlebars/ejs) -> html
+[data(yaml/json)] + [data(gulp control)] + [filter(js)] + tpl(handlebars/ejs) -> html;
+1 tpl -> [0..n] html;
 
 State
 =====
@@ -69,7 +70,6 @@ name: world
 * **demo.filter.js**
 
 ```javascript
-'use strict';
 module.exports.filter = function(data) {
   data.name = "hello " + data.name;
   return data;
@@ -115,7 +115,6 @@ v1: from yaml
 * **demo.filter.js**
 
 ```javascript
-'use strict';
 module.exports.filter = function(data) {
   data.v3 = "from filter";
   return data;
@@ -136,6 +135,63 @@ module.exports.filter = function(data) {
 <div>v1 from yaml</div>
 <div>v2 from gulp</div>
 <div>v3 from filter</div>
+```
+
+1 tpl -> [1..n] html
+--------------------
+
+gulpfile.js
+-----------
+
+```javascript
+var gulp = require('gulp');
+var savefile = require('gulp-savefile');
+var tpl = require('gulp-tpl');
+
+gulp.task('default', function() {
+  return gulp.src('demo.hbs') // or demo.ejs/demo.filter.js/demo.yaml/demo.json
+        .pipe(tpl.html())
+        .pipe(savefile());
+});
+```
+
+* **demo.filter.js**
+
+```javascript
+module.exports.filter = function(data) {
+  datas = [];
+
+  data.ispc = true;
+  datas.push({filename:"demo_pc", data:data});
+
+  data = JSON.parse(JSON.stringify(data))
+  data.ispc = false;
+  datas.push({filename:"demo_mobile", data:data});
+
+  return datas;
+};
+```
+
+* **demo.hbs**
+
+```html
+{{#if ispc}}
+<div>pc</div>
+{{else}}
+<div>mobile</div>
+{{/if}}
+```
+
+* **output: demo_pc.html**
+
+```html
+<div>pc</div>
+```
+
+* **output: demo_mobile.html**
+
+```html
+<div>mobile</div>
 ```
 
 option
