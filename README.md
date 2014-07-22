@@ -1,8 +1,9 @@
 gulp-tpl
 ========
 
-[data(yaml/json)] + [data(gulp control)] + [filter(js)] + tpl(handlebars/ejs) -> html;
-1 tpl -> [0..n] html;
+[data(yaml/json)] + [data(gulp control)] + [filter(js)] + tpl(handlebars/ejs) -> html
+
+1 tpl -> [1..n] html
 
 State
 =====
@@ -22,8 +23,10 @@ Note
 * **note1:** **base name is same `demo`**
 * **note2:** **must `*.filter.js`**
 
-gulpfile.js
------------
+data + tpl -> html
+------------------
+
+* **gulpfile.js**
 
 ```javascript
 var gulp = require('gulp');
@@ -36,9 +39,6 @@ gulp.task('default', function() {
         .pipe(savefile());
 });
 ```
-
-data + tpl -> html
-------------------
 
 * **demo.yaml**
 
@@ -60,6 +60,20 @@ name: world
 
 data + filter + tpl -> html
 ---------------------------
+
+* **gulpfile.js**
+
+```javascript
+var gulp = require('gulp');
+var savefile = require('gulp-savefile');
+var tpl = require('gulp-tpl');
+
+gulp.task('default', function() {
+  return gulp.src('demo.hbs') // or demo.ejs/demo.filter.js/demo.yaml/demo.json
+        .pipe(tpl.html())
+        .pipe(savefile());
+});
+```
 
 * **demo.yaml**
 
@@ -89,10 +103,9 @@ module.exports.filter = function(data) {
 ```
 
 data + gulp + filter + tpl -> html
----------------------------
+----------------------------------
 
-gulpfile.js
------------
+* **gulpfile.js**
 
 ```javascript
 var gulp = require('gulp');
@@ -140,8 +153,7 @@ module.exports.filter = function(data) {
 1 tpl -> [1..n] html
 --------------------
 
-gulpfile.js
------------
+* **gulpfile.js**
 
 ```javascript
 var gulp = require('gulp');
@@ -218,11 +230,6 @@ Test
 
 * `npm test`
 * examples `./test`
-
-Deprecated
-==========
-
-gulp-tpl.savefile() is deprecated, please use gulp-savefile
 
 License
 =======
